@@ -1,0 +1,27 @@
+<%= form_for @post, :remote => true do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% if @post.title.nil? %>
+    <h3 name="post[title]" class="editable" contenteditable>Edit this title</h3>
+    <p name="post[text]" class="editable" contenteditable>..and get started on your text.</p>
+  <% else %>
+    <h3 name="post[title]" class="editable" contenteditable><%= @post.title %></h3>
+    <p name="post[text]" class="editable" contenteditable><%= @post.text.gsub(/\r\n?/,"<br/>").html_safe %></p>
+  <% end %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  <!-- Pass controller action name to form submission script !-->
+  <%= javascript_tag do %>
+    window.activeAction = "<%=j controller.action_name %>";  
+  <% end %>
+<% end %>
